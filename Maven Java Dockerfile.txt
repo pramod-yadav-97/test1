@@ -1,0 +1,42 @@
+Maven Java Project
+
+-Dmaven.test.failure.ignore=true
+-Dmaven.skip.test=true
+
+
+## If mvn compiled outside
+
+FROM openjdk:8-jdk-alpine
+RUN mkdir /app1/
+COPY target/gs-maven-0.1.0.jar /app1/
+WORKDIR /app1/
+ENTRYPOINT ["java","-jar","/app1/gs-maven-0.1.0.jar"]
+
+
+#####################3
+
+
+# Use an official Maven runtime as a parent image
+FROM maven:3.8.4-openjdk-11 AS build
+
+# Set the working directory in the container
+WORKDIR /app
+
+# Copy the POM and source code to the container
+COPY ./pom.xml ./pom.xml
+COPY ./src ./src
+
+# Compile the Maven project and package it as a JAR file
+RUN mvn clean package
+
+# Create a new stage for the runtime image
+FROM openjdk:11-jre-slim
+
+# Set the working directory in the runtime container
+WORKDIR /app
+
+# Copy the compiled JAR file from the build stage to the runtime container
+COPY --from=build /app/target/your-project-name.jar ./your-project-name.jar
+
+# Specify the command to run your application when the container starts
+CMD ["java", "-jar", "your-project-name.jar"]

@@ -1,0 +1,13 @@
+kubectl create deployment --dry-run=client -o yaml > deploy.yaml
+
+minikube start --port=32000:32000,32001:320001  ::: To expose for NodePort
+
+minikube start --driver=docker    ::: sync with docker
+
+minikube service --all
+
+minikube service serviceName --url
+
+Django : 8000
+Flask  : 5000
+React  : 3000

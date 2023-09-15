@@ -1,0 +1,29 @@
+FLASK APPLICATION
+
+##################################################
+
+# FROM python:alpine3.7
+# WORKDIR /app
+# COPY requirements.txt /app/
+# RUN pip install -r requirements.txt
+# COPY . /app/
+# EXPOSE 5000
+# ENV FLASK_APP=application.py
+# CMD [ "python","application.py"]
+
+
+
+FROM python:alpine3.7
+WORKDIR /app
+COPY requirements.txt /app/
+RUN pip install -r requirements.txt
+COPY . /app/
+EXPOSE 5000
+ENV FLASK_APP=application.py
+CMD [ "flask", "run", "--port", "5000", "--host", "0.0.0.0" ]
+
+# Usage: flask run [OPTIONS]
+# Try 'flask run --help' for help.
+
+# Error: Could not locate a Flask application. Use the 'flask --app' option, 
+# 'FLASK_APP' environment variable, or a 'wsgi.py' or 'app.py' file in the current directory.
